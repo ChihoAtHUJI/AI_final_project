@@ -14,8 +14,8 @@ one action: (CD,__) --> CD
 (C$E,___) --> C$E
 (FE,__) --> FE
 
-
-
+available notes --> ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#']
+ 
 algorithm output: .txt file
 G,CD$D,CD,C$E
 C,Eb,$,E
