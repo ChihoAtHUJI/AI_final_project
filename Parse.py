@@ -1,10 +1,11 @@
 import numpy as np
 from scipy.io import wavfile
 
-BPM = 120
-DICT = {'$':0, 'A':37, 'A#':38, 'Bb':38, 'B':39, 'C':40, 'C#':41, 'Db':41, 'D':42, 'D#':43, 'Eb':43, 'E':44, 'F':45, 'F#':46, 'Gb':46, 'G':47, 'G#':48, 'Ab':48} #create dictionary for each note and placement
+BPM = 100
+DICT = {'$':0, 'A':1, 'A#':2, 'Bb':2, 'B':3, 'C':4, 'C#':5, 'Db':5, 'D':6, 'D#':7, 'Eb':7, 'E':8, 'F':9, 'F#':10, 'Gb':10, 'G':11, 'G#':12, 'Ab':12} #create dictionary for each note and placement
 BEAT_DURATION = 60 / BPM #the duration of each beat in s, by the bpm
 SAMPLE_RATE = 44100
+BASE_FREQ = 16.35 # C0 freq
 
 """
 This function parsess the notes given on the path for
@@ -42,8 +43,15 @@ def parse_notes(path):
     f.close()
     write_notes(song)
 
-def calculate_freq(note):
-    return 2**((DICT[note]-49)/12) * 440
+def calculate_freq(note, oct=5):
+    if DICT[note] == 0:
+        return 0
+    if DICT[note] < 3:
+        key = DICT[note] + 12 + ((oct - 1) * 12)
+    else:
+        key = DICT[note] + ((oct - 1) * 12)
+    print(2**((key-49)/12) * 440)
+    return 2**((key-49)/12) * 440
 
 def write_notes(song):
     song_data = np.concatenate(song)
