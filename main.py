@@ -1,4 +1,4 @@
-from Parse import parse_notes
+from parse import parse_notes
 
 def main():
     parse_notes("example.txt")
