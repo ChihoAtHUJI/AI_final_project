@@ -45,6 +45,8 @@ class QLearningAgent(ReinforcementAgent):
       Should return 0.0 if we never seen
       a state or (state,action) tuple
     """
+    print(state)
+    print(action)
     if not (state, action) in self.qtuples:
         return 0.0
     return self.qtuples[(state, action)]
@@ -162,52 +164,6 @@ class PacmanQAgent(QLearningAgent):
     action = QLearningAgent.getAction(self, state)
     self.doAction(state, action)
     return action
-
-
-class ApproximateQAgent(PacmanQAgent):
-  """
-     ApproximateQLearningAgent
-
-     You should only have to overwrite getQValue
-     and update.  All other QLearningAgent functions
-     should work as is.
-  """
-  def __init__(self, extractor='IdentityExtractor', **args):
-    self.featExtractor = util.lookup(extractor, globals())()
-    PacmanQAgent.__init__(self, **args)
-
-    # You might want to initialize weights here.
-    "*** YOUR CODE HERE ***"
-    self.qtuples = {}
-    self.weights = {}
-
-  def getQValue(self, state, action):
-    """
-      Should return Q(state,action) = w * featureVector
-      where * is the dotProduct operator
-    """
-    "*** YOUR CODE HERE ***"
-    q = 0
-    features = self.featExtractor.getFeatures(state, action)
-    for f in features.keys():
-      if not f in self.weights:
-        self.weights[f] = 0.0
-      q += self.weights[f] * features[f]
-    return q
-
-  def update(self, state, action, nextState, reward):
-    """
-       Should update your weights based on transition
-    """
-    "*** YOUR CODE HERE ***"
-    features = self.featExtractor.getFeatures(state, action)
-    for f in features.keys():
-      if not f in self.weights:
-        self.weights[f] = 0.0
-      old_w_val = self.weights[f]
-      self.weights[f] = old_w_val + features[f] * self.alpha * (reward + self.discount * self.getValue(nextState) -
-                                                      self.getQValue(state,action))
-
 
 
   def final(self, state):
