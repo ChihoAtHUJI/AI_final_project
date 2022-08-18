@@ -11,8 +11,8 @@ class Writer:
 
     def writeBar(self, actions):
         for i in range(len(actions) - 1):
-            self.file.writelines(actions[i].get_note() + ',')
-        self.file.writelines(actions[-1].get_note() + '\n')
+            self.file.writelines(actions[i][0] + ',')
+        self.file.writelines(actions[-1][0] + '\n')
 
     def closeFile(self):
         self.file.close()

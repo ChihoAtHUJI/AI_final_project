@@ -9,3 +9,9 @@ class Chord:
 
     def get_root(self):
         return self.root
+
+    def get_third(self):
+        return self.third
+
+    def get_fifth(self):
+        return self.fifth

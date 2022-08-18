@@ -45,8 +45,6 @@ class QLearningAgent(ReinforcementAgent):
       Should return 0.0 if we never seen
       a state or (state,action) tuple
     """
-    print(state)
-    print(action)
     if not (state, action) in self.qtuples:
         return 0.0
     return self.qtuples[(state, action)]

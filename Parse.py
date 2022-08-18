@@ -13,14 +13,15 @@ txt file, then converts them to wav file
 """
 
 
-def parse_notes(path):
+def parse_notes(path, is_melody):
     f = open(path, "r")
+    name = f.name
     song = []
     for bar in f:
         bar = bar.strip().split(",")
         for beat in bar:
             if beat in DICT:
-                song.append(get_wave(calculate_freq(beat), BEAT_DURATION))
+                song.append(get_wave(calculate_freq(beat, is_melody), BEAT_DURATION))
             else:
                 a = []
                 if len(beat) == 2:
@@ -41,22 +42,27 @@ def parse_notes(path):
                         else:
                             pass
                 for n in a:
-                    song.append(get_wave(calculate_freq(n), BEAT_DURATION / len(a)))
+                    song.append(get_wave(calculate_freq(n, is_melody), is_melody, BEAT_DURATION / len(a)))
     f.close()
-    write_notes(song)
+    write_notes(song, name)
 
 
-def calculate_freq(note):
+def calculate_freq(note, is_melody):
+    if is_melody:
+        return (2 ** ((DICT[note] - 49) / 12) * 440) * 2
     return 2 ** ((DICT[note] - 49) / 12) * 440
 
 
-def write_notes(song):
+def write_notes(song, name):
     song_data = np.concatenate(song)
-    wavfile.write("output.wav", SAMPLE_RATE, song_data.astype(np.int16))
+    name = name + 'wav'
+    wavfile.write(name, SAMPLE_RATE, song_data.astype(np.int16))
 
 
-def get_wave(freq, duration=0.5):
-    amplitude = 4096
+def get_wave(freq, is_melody, duration=0.5):
+    amplitude = 2048
+    if is_melody:
+        amplitude *=2
     t = np.linspace(0, duration, int(SAMPLE_RATE * duration))
     wave = amplitude * np.sin(2 * np.pi * freq * t)
     return wave
