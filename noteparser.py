@@ -20,15 +20,16 @@ def parse_notes(path):
         bar = bar.strip().split(",")
         for beat in bar:
             beat = beat.split("/")
-            b = get_chord_wave(beat[0], BEAT_DURATION)
+            chord = beat[0]
             beat = beat[1]
             if beat in DICT:
+                b = get_chord_wave(chord, BEAT_DURATION)
                 b.append(get_wave(calculate_freq(beat), BEAT_DURATION))
                 song.append(sum(b))
             else:
                 a = list(beat)
                 for note in a:
-                    b = get_chord_wave(beat[0], BEAT_DURATION/len(a))
+                    b = get_chord_wave(chord, BEAT_DURATION/len(a))
                     b.append(get_wave(calculate_freq(note), (BEAT_DURATION/len(a))))
                     song.append(sum(b))
     f.close()
