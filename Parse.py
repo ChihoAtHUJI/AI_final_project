@@ -1,11 +1,15 @@
 import numpy as np
 from scipy.io import wavfile
 
+# LATEST UPDATE
+
 BPM = 120
-DICT = {'$': 0, 'A': 37, 'A#': 38, 'Bb': 38, 'B': 39, 'C': 40, 'C#': 41, 'Db': 41, 'D': 42, 'D#': 43, 'Eb': 43, 'E': 44,
-        'F': 45, 'F#': 46, 'Gb': 46, 'G': 47, 'G#': 48, 'Ab': 48}  # create dictionary for each note and placement
+DICT = {'$': 0, 'A': 1, 'b': 2, 'B': 3, 'C': 4, 'd': 5, 'D': 6, 'e': 7, 'E': 8, 'F': 9, 'g': 10, 'G': 11,
+        'a': 12}  # create dictionary for each note and placement
 BEAT_DURATION = 60 / BPM  # the duration of each beat in s, by the bpm
 SAMPLE_RATE = 44100
+CHORD_OCT = 4
+FREQ_CONSTANT = 2**(1/12)
 
 """
 This function parsess the notes given on the path for
@@ -13,56 +17,70 @@ txt file, then converts them to wav file
 """
 
 
-def parse_notes(path, is_melody):
+def parse_notes(path):
     f = open(path, "r")
-    name = f.name
     song = []
     for bar in f:
         bar = bar.strip().split(",")
         for beat in bar:
+            beat = beat.split("/")
+            chord = beat[0]
+            beat = beat[1]
             if beat in DICT:
-                song.append(get_wave(calculate_freq(beat, is_melody), BEAT_DURATION))
+                b = get_chord_wave(chord, BEAT_DURATION)
+                b.append(get_wave(calculate_freq(beat), BEAT_DURATION))
+
+                song.append(sum(b))
             else:
-                a = []
-                if len(beat) == 2:
-                    a = list(beat)
-                else:
-                    for i in range(len(beat) - 1):
-                        if beat[i + 1] == "b" or beat[i + 1] == "#":
-                            a.append(beat[i] + beat[i + 1])
-                            if i == len(beat) - 1:
-                                a.append(beat[-1])
-                            i += 2
-                        elif beat[i] in DICT:
-                            a.append(beat[i])
-                            if i == len(beat) - 2:
-                                a.append(beat[-1])
-                        elif beat[i + 1] in DICT:
-                            a.append(beat[i + 1])
-                        else:
-                            pass
-                for n in a:
-                    song.append(get_wave(calculate_freq(n, is_melody), is_melody, BEAT_DURATION / len(a)))
+                a = list(beat)
+                for note in a:
+                    b = get_chord_wave(chord, BEAT_DURATION / len(a))
+                    b.append(get_wave(calculate_freq(note), (BEAT_DURATION / len(a))))
+                    song.append(sum(b))
     f.close()
-    write_notes(song, name)
+    write_notes(song)
 
 
-def calculate_freq(note, is_melody):
-    if is_melody:
-        return (2 ** ((DICT[note] - 49) / 12) * 440) * 2
-    return 2 ** ((DICT[note] - 49) / 12) * 440
+# def calculate_freq(note, oct=5, add=0):
+#     if DICT[note] == 0 : return 0
+#     octave_differential = 12 * (oct - CHORD_OCT)
+#     n = DICT[note] - 1 + octave_differential + add
+#     # print(note + " "  + str(n))
+#     if add == 0:
+#         print(note + " " + str(440 * (FREQ_CONSTANT ** n)))
+#     return 440 * (FREQ_CONSTANT ** n)
+
+def calculate_freq(note, oct=6, add=0):
+    if DICT[note] == 0: return 0
+    if DICT[note] < 3:
+        key = DICT[note] + 12 + ((oct - 1) * 12) + add
+    else:
+        key = DICT[note] + ((oct - 1) * 12) + add
+    return 2 ** ((key - 49) / 12) * 440
 
 
-def write_notes(song, name):
+def write_notes(song):
     song_data = np.concatenate(song)
-    name = name + 'wav'
-    wavfile.write(name, SAMPLE_RATE, song_data.astype(np.int16))
+    wavfile.write("output.wav", SAMPLE_RATE, song_data.astype(np.int16))
 
 
-def get_wave(freq, is_melody, duration=0.5):
-    amplitude = 2048
-    if is_melody:
-        amplitude *=2
+def get_wave(freq, duration=0.5):
+    amplitude = 4096
     t = np.linspace(0, duration, int(SAMPLE_RATE * duration))
     wave = amplitude * np.sin(2 * np.pi * freq * t)
+    return wave
+
+
+def get_chord_wave(chord, dur=0.5):
+    if chord[-1] == 'm':
+        a = 3;
+        b = 4
+    else:
+        a = 4;
+        b = 3
+    data = []
+    data.append(calculate_freq(chord[0], CHORD_OCT));
+    data.append(calculate_freq(chord[0], CHORD_OCT, a));
+    data.append(calculate_freq(chord[0], CHORD_OCT, a + b))
+    wave = [get_wave(freq, dur) for freq in data]
     return wave
