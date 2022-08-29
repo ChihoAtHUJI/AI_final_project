@@ -1,0 +1,40 @@
+Preprocessing :
+Build all 84 scales.
+Build all 36 chords ( major minor and diminished, later on we can add more chords).
+Analyze the input and build 4 chord objects from it.
+Filter out all of the irrelevant scales that do not fit all 4 chords.
+Take the chord progression and filter out every scale that does not fit the progression.
+I think
+evaluation: we analyse every 5-10 bars? --> concept
+how? --> according to how many matches with chord...
+how many variation it made...?
+
+input: chord progression,
+ex-input) 50,G,C,CM,EM,F#
+AI needs to do evaluation
+
+action: {notes} X {_,__,___,____}
+one action: (CD,__) --> CD
+(CD,__) --> CD
+(C$,__) --> C$
+(C$E,___) --> C$E
+(FE,__) --> FE
+
+
+
+algorithm output: .txt file
+G,CD$D,CD,C$E
+C,Eb,$,E
+CM,D#,C,E
+F#,$,$,F#
+...
+.
+.
+.
+
+gui --> change .txt to .wav file
+.txt-> parse it -> A:144hz,....
+it plays .txt file.
+final output: .wav file
+
+
