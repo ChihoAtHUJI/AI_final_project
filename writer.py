@@ -1,6 +1,5 @@
 import sys
-import Parse
-import musicGUI
+import QLearningAgent.musicGUI
 class Writer:
     def __init__(self, fileName):
         self.fileName = fileName
