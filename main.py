@@ -50,8 +50,8 @@ def chord_builder(chord_progression):
             else:
                 minor_key = (DICT[note] + MINOR_THIRD) % 12
                 fifth_key = (DICT[note] + FIFTH) % 12
-            chord_list.append(chord.Chord(INVERTED_DICT[root_ind], INVERTED_DICT[minor_key], INVERTED_DICT[fifth_key],
-                                          chord_name))
+            chord_list.append([chord_name, INVERTED_DICT[root_ind], INVERTED_DICT[minor_key], INVERTED_DICT[fifth_key],
+                                           '$'])
         else:
             note = chord_name[NAME]
             root_ind = DICT[note]
@@ -61,8 +61,8 @@ def chord_builder(chord_progression):
             else:
                 major_key = (DICT[note] + MAJOR_THIRD) % 12
                 fifth_key = (DICT[note] + FIFTH) % 12
-            chord_list.append(chord.Chord(INVERTED_DICT[root_ind], INVERTED_DICT[major_key], INVERTED_DICT[fifth_key],
-                                          chord_name))
+            chord_list.append([chord_name, INVERTED_DICT[root_ind], INVERTED_DICT[major_key], INVERTED_DICT[fifth_key],
+                                           '$'])
     return chord_list
 
 def check_input(input):
@@ -112,7 +112,10 @@ if __name__ == '__main__':
         if subdivisions > 4:
             print("Invalid choice of subdivisioins")
             exit(-1)
-        chord_progression = chord_builder(inputs)
+        chord_progression_list = chord_builder(inputs)
+        chord_progression = list()
+        for ch in chord_progression_list:
+            chord_progression.append(chord.Chord(ch[1], ch[2], ch[3], ch[0]))
         player = musicGUI.musicPlayer(chord_progression, learning_rate, epsilon, discount_factor, subdivisions)
         player.runTraining(iterations)
         player.run(repetitions)
