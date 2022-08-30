@@ -7,9 +7,9 @@ import Parse
 ROOT = 0
 CHORD = 0
 class musicPlayer:
-    def __init__(self, chord_progression, alpha, epsilon, gamma):
+    def __init__(self, chord_progression, alpha, epsilon, gamma, subdivisions):
         self.scales = [['G','A','B','C','D','E','g', '$', 'b', 'F', 'd', 'e', 'a']]
-        self.musicEnvironment = musicEnvironment.MusicEnvironment(self.scales, chord_progression)
+        self.musicEnvironment = musicEnvironment.MusicEnvironment(self.scales, chord_progression, subdivisions)
         actionFn = lambda state: \
             self.musicEnvironment.getPossibleActions(state)
         self.learner = qlearningAgents.QLearningAgent(actionFn=actionFn)

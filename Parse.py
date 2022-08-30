@@ -41,15 +41,6 @@ def parse_notes(path):
     write_notes(song, path)
 
 
-# def calculate_freq(note, oct=5, add=0):
-#     if DICT[note] == 0 : return 0
-#     octave_differential = 12 * (oct - CHORD_OCT)
-#     n = DICT[note] - 1 + octave_differential + add
-#     # print(note + " "  + str(n))
-#     if add == 0:
-#         print(note + " " + str(440 * (FREQ_CONSTANT ** n)))
-#     return 440 * (FREQ_CONSTANT ** n)
-
 def calculate_freq(note, oct=6, add=0):
     if DICT[note] == 0: return 0
     if DICT[note] < 3:
