@@ -20,11 +20,11 @@ class board():
         result = []
         for i in range(len(inputs)):
             subset = []
-            if i != 0:
-                for j in range(4):
-                    _node = Node(inputs[i], j)
-                    subset.append(_node)
-                result.append(subset)
+
+            for j in range(4):
+                _node = Node(inputs[i], j)
+                subset.append(_node)
+            result.append(subset)
         return result
 
 
@@ -34,10 +34,9 @@ class board():
         result = []
         for i in range(len(inputs)):
             subset = []
-            if i != 0:
-                for j in range(4):
-                    subset.append(None)
-                result.append(subset)
+            for j in range(4):
+                subset.append(None)
+            result.append(subset)
         return result
 
     def finished(self):
@@ -75,5 +74,5 @@ class board():
 
 
 
-if __name__ == '__main__':
-    B = board('50,G,C,D,Em')
+# if __name__ == '__main__':
+#     B = board('50,G,C,D,Em')
