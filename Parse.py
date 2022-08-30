@@ -52,7 +52,7 @@ def calculate_freq(note, oct=6, add=0):
 
 def write_notes(song, name):
     song_data = np.concatenate(song)
-    wavfile.write(name + ".wav", SAMPLE_RATE, song_data.astype(np.int16))
+    wavfile.write(name.replace('.txt', '') + ".wav", SAMPLE_RATE, song_data.astype(np.int16))
 
 
 def get_wave(freq, duration=0.5):

@@ -17,7 +17,7 @@ def makeOutputCsp(agent):
     result = agent.getSolution()
     root_chords = agent.getChordInformation()
 
-    f = open("csp_result.txt", "w")
+    f = open("CSP.txt", "w")
     if result is False:
         f.write("False")
         f.close()
@@ -65,33 +65,58 @@ def chord_builder(chord_progression):
                                           chord_name))
     return chord_list
 
+def check_input(input):
+    check = input.split(',')
+    if len(check) != 4:
+        return False
+    for chord in check:
+        if len(chord) > 2:
+            return False
+        elif len(chord) == 2:
+            if chord[-1] != 'm':
+                return False
+        elif len(chord) == 1:
+            if chord[0] not in DICT.keys():
+                return False
+            if chord[0] == '$':
+                return False
+        elif len(chord) == 0:
+            return False
+    return True
+
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    inputs = input("type chord progressions\n")
+    print("Input Guidelines : For the chord progression, write only the root note of each chord, seperated by a comma,"
+          " add an -m to each root note if it's a minor chord, for example:\n Bm,Am,C,G would be B-minor, A-minor,"
+          "C-major and G-major\n")
+    inputs = input("Type chord progression\n")
+    if not check_input(inputs):
+        print("Wrong input format, please follow guidelines")
+        exit(-1)
     choice = input("Press C for CSP, Q for Q-learning\n")
     if choice == 'C':
         board = board(inputs)
         cspAgent = CspAgent(board)
         makeOutputCsp(cspAgent)
-        parser = Parse.parse_notes('csp_result.txt')
+        parser = Parse.parse_notes('CSP.txt')
         exit(0)
     if choice == 'Q':
         inputs = inputs.split(',')
-        inputs = inputs[1::]
         epsilon = float(input("Enter an epsilon value ( values 0 to 1)\n"))
         learning_rate = float(input("Enter a learning rate value (values 0 to 1)\n"))
         discount_factor = float(input("Choose discount factor (values 0 to 1)\n"))
-        iterations = int(input("Choose number of training iterations (more than 10000 gives a very long runtime)\n"))
+        iterations = int(input("Choose number of training iterations (more than 10000 takes a very long runtime)\n"))
         subdivisions = int(input("Choose maximum number of notes per beat (up to 4)\n"))
+        repetitions = int(input("Choose number of bars that you would like to be played (longer gives longer input)\n"))
         if subdivisions > 4:
             print("Invalid choice of subdivisioins")
-            exit(1)
+            exit(-1)
         chord_progression = chord_builder(inputs)
         player = musicGUI.musicPlayer(chord_progression, learning_rate, epsilon, discount_factor, subdivisions)
         player.runTraining(iterations)
-        player.run()
-        Parse.parse_notes('rr')
+        player.run(repetitions)
+        Parse.parse_notes('QLearning')
         exit(0)
     print("Invalid choice")
     exit(1)

@@ -20,7 +20,7 @@ class musicPlayer:
         self.learner.setLearningRate(self.alpha)
         self.learner.setDiscount(self.gamma)
         self.stepCount = 0
-        self.fileWriter = writer.Writer('rr')
+        self.fileWriter = writer.Writer('Qlearning')
         self.actions_in_bar = []
 
     def step(self, is_training):
@@ -54,10 +54,11 @@ class musicPlayer:
 
 
 
-    def run(self):
+    def run(self, bars):
         self.fileWriter.openFile()
+        reps = bars * 4
         self.actions_in_bar = []
-        for i in range(100):
+        for i in range(reps):
             self.step(False)
         self.fileWriter.closeFile()
 

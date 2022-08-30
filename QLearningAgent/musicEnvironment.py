@@ -94,12 +94,12 @@ class MusicEnvironment(environment.Environment):
         for note in action:
             if note in state[CHORD].get_chord():
                 reward += (10 - 0.5 * self.note_frequency_dict[note]) / length
-            elif DICT[note] - DICT[state[CHORD].get_root()] == 5 or\
-                    DICT[note] - DICT[state[CHORD].get_root()] == -7:
-                 reward += (10 - 0.5 * self.note_frequency_dict[note]) / length
-            elif DICT[note] - DICT[state[CHORD].get_third()] == 7 or\
-                    DICT[note] - DICT[state[CHORD].get_third()] == -5:
-                 reward += (10 - 0.5 * self.note_frequency_dict[note]) / length
+            # elif DICT[note] - DICT[state[CHORD].get_root()] == 5 or\
+            #         DICT[note] - DICT[state[CHORD].get_root()] == -7:
+            #      reward += (10 - 0.5 * self.note_frequency_dict[note]) / length
+            # elif DICT[note] - DICT[state[CHORD].get_third()] == 7 or\
+            #         DICT[note] - DICT[state[CHORD].get_third()] == -5:
+            #      reward += (10 - 0.5 * self.note_frequency_dict[note]) / length
             # elif DICT[note] - DICT[self.starting_state[CHORD].get_root()] == 2 or\
             #         DICT[note] - DICT[self.starting_state[CHORD].get_root()] == -10:
             #      reward += (10 - 0.5 * self.note_frequency_dict[note]) / length
