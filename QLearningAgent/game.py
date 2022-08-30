@@ -6,8 +6,8 @@
 # John DeNero (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
 # For more info, see http://inst.eecs.berkeley.edu/~cs188/sp09/pacman.html
 
-from util import *
-from util import raiseNotDefined
+from QLearningAgent.util import *
+from QLearningAgent.util import raiseNotDefined
 import time, os
 import traceback
 

@@ -1,4 +1,4 @@
-import environment
+from QLearningAgent import environment
 import itertools
 
 CHORD = 0
@@ -50,12 +50,12 @@ class MusicEnvironment(environment.Environment):
         l4 = list(itertools.permutations(self.scales[0], 4))
         for l in l1:
             actions.append(l[0])
-        for l in l2:
-            actions.append(l[0] + l[1])
-        for l in l3:
-            actions.append(l[0] + l[1] + l[2])
-        for l in l4:
-            actions.append(l[0] + l[1] + l[2] + l[3])
+        # for l in l2:
+        #     actions.append(l[0] + l[1])
+        # for l in l3:
+        #     actions.append(l[0] + l[1] + l[2])
+        # for l in l4:
+        #     actions.append(l[0] + l[1] + l[2] + l[3])
         return actions
 
     def getPossibleActions(self, state):

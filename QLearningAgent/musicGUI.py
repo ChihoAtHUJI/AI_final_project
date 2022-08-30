@@ -1,6 +1,6 @@
-import musicEnvironment
-import qlearningAgents
-import chord
+from QLearningAgent import musicEnvironment
+from QLearningAgent import qlearningAgents
+from QLearningAgent import chord
 import writer
 import Parse
 
@@ -81,13 +81,3 @@ class musicPlayer:
 #     mix_wav.writeframes(mix.astype('<i2').tobytes())
 #     mix_wav.close()
 
-if __name__ == '__main__':
-    G_chord = chord.Chord('G', 'B', 'D', 'G')
-    C_chord = chord.Chord('C', 'E', 'G', 'C')
-    D_chord = chord.Chord('D', 'A', 'g', 'D')
-    EM_chord = chord.Chord('E', 'B', 'G', 'Em')
-    chord_progression = [G_chord, D_chord, EM_chord, C_chord]
-    player = musicPlayer(chord_progression, 1, 0.9, 0.2)
-    player.runTraining(1000)
-    player.run()
-    Parse.parse_notes('rr')

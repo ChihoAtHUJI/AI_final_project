@@ -6,9 +6,9 @@
 # John DeNero (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
 # For more info, see http://inst.eecs.berkeley.edu/~cs188/sp09/pacman.html
 
-from learningAgents import ReinforcementAgent
-
-import random,util
+from QLearningAgent.learningAgents import ReinforcementAgent
+from QLearningAgent import util
+import random
 
 
 class QLearningAgent(ReinforcementAgent):

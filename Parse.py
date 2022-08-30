@@ -38,7 +38,7 @@ def parse_notes(path):
                     b.append(get_wave(calculate_freq(note), (BEAT_DURATION / len(a))))
                     song.append(sum(b))
     f.close()
-    write_notes(song)
+    write_notes(song, path)
 
 
 # def calculate_freq(note, oct=5, add=0):
@@ -59,9 +59,9 @@ def calculate_freq(note, oct=6, add=0):
     return 2 ** ((key - 49) / 12) * 440
 
 
-def write_notes(song):
+def write_notes(song, name):
     song_data = np.concatenate(song)
-    wavfile.write("output.wav", SAMPLE_RATE, song_data.astype(np.int16))
+    wavfile.write(name + ".wav", SAMPLE_RATE, song_data.astype(np.int16))
 
 
 def get_wave(freq, duration=0.5):

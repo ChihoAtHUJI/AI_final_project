@@ -1,7 +1,8 @@
 
 from CSP.CSP_Agent import *
-
-
+import Parse
+from QLearningAgent import chord
+from QLearningAgent import musicGUI
 def makeOutputCsp(agent):
     result = agent.getSolution()
     root_chords = agent.getChordInformation()
@@ -34,5 +35,15 @@ def makeOutputCsp(agent):
 if __name__ == '__main__':
     inputs = input("type chord progressions\n")
     board = board(inputs)
-    agent = CspAgent(board)
-    makeOutputCsp(agent)
+    cspAgent = CspAgent(board)
+    makeOutputCsp(cspAgent)
+    parser = Parse.parse_notes('csp_result.txt')
+    G_chord = chord.Chord('G', 'B', 'D', 'G')
+    C_chord = chord.Chord('C', 'E', 'G', 'C')
+    D_chord =chord.Chord('D', 'A', 'g', 'D')
+    EM_chord = chord.Chord('E', 'B', 'G', 'Em')
+    chord_progression = [G_chord, C_chord, D_chord, EM_chord]
+    player = musicGUI.musicPlayer(chord_progression, 1, 0.9, 0.2)
+    player.runTraining(10000)
+    player.run()
+    Parse.parse_notes('rr')
